@@ -11,17 +11,19 @@ const Pragma = `
 const Schema = `
 	create table if not exists Users (
 		id   integer primary  key asc,
+		addr text    not null,
+		uuid text    not null default (lower(hex(randomblob(8)))),
 		init integer not null default (unixepoch()),
-		uuid text    not null unique,
-		addr text    not null
+
+		unique(uuid)
 	);
 
 	create table if not exists Pairs (
 		id   integer primary  key asc,
-		init integer not null default (unixepoch()),
 		user integer not null references Users(id),
 		name text    not null,
 		body text    not null,
+		init integer not null default (unixepoch()),
 
 		unique(user, name)
 	);
