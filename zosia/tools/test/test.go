@@ -2,6 +2,11 @@
 package test
 
 import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/jmoiron/sqlx"
@@ -38,6 +43,26 @@ func Get(t *testing.T, db *sqlx.DB, code string, elems ...any) any {
 	}
 
 	return data
+}
+
+// Request returns a new mock Request with a body and mux values.
+func Request(mthd, path, body string, pairs ...string) *http.Request {
+	r := httptest.NewRequest(mthd, path, bytes.NewBufferString(body))
+	for _, pair := range pairs {
+		if name, data, ok := strings.Cut(pair, "="); ok {
+			r.SetPathValue(name, data)
+		}
+	}
+
+	return r
+}
+
+// Response returns a ResponseRecorder's status code and JSON response.
+func Response(w *httptest.ResponseRecorder) (int, map[string]any, error) {
+	var data map[string]any
+	rslt := w.Result()
+	err := json.NewDecoder(rslt.Body).Decode(&data)
+	return rslt.StatusCode, data, err
 }
 
 // Set executes a database query.
