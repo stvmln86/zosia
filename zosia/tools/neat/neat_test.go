@@ -47,3 +47,9 @@ func TestTime(t *testing.T) {
 	tobj := Time(1234567890)
 	assert.Equal(t, want, tobj)
 }
+
+func TestUUID(t *testing.T) {
+	// success
+	uuid := UUID("AAAABBBBCCCCDDDD...")
+	assert.Equal(t, "aaaabbbbccccdddd", uuid)
+}
