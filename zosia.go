@@ -1,0 +1,25 @@
+///////////////////////////////////////////////////////////////////////////////////////
+//          zosia.go · a minimalist key-value api in Go · by Stephen Malone          //
+///////////////////////////////////////////////////////////////////////////////////////
+
+package zosia
+
+import (
+	"flag"
+)
+
+///////////////////////////////////////////////////////////////////////////////////////
+//                          part one · constants and globals                         //
+///////////////////////////////////////////////////////////////////////////////////////
+
+// 1.1: command-line flags
+///////////////////////////
+
+// Flags is the default command-line parser.
+var Flags = flag.NewFlagSet("zosia", flag.ExitOnError)
+
+// FlagAddr is the address the server listens on.
+var FlagAddr = Flags.String("addr", ":8080", "host:port address")
+
+// FlagDire is the directory the server stores data in.
+var FlagDire = Flags.String("dire", ".", "storage directory")
